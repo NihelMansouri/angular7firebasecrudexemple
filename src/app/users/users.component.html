@@ -1,0 +1,59 @@
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+  <h1 class="h2">Listes users</h1>
+  <!-- It won't show if there is no user data -->
+  <a routerLink="/add-user" class="btn btn-success" *ngIf="hideWhenNoStudent">
+    <i class="fas fa-plus custom-fa-plus"></i>
+    Ajouter user
+  </a>
+</div>
+
+<div class="pricing-header mx-auto">
+
+  <!-- Preloader shows before the data loads-->
+  <div class="no-data text-center" *ngIf="preLoader">
+    <img src="assets/preloader.gif" class="preloader-icon" alt="No user">
+  </div>
+
+  <!-- No data shows when their is no user data available -->
+  <div class="no-data text-center" *ngIf="noData">
+    <img src="assets/no-user.svg" class="nodata-msg" alt="No user">
+    <p class="nodata-msg">No user added yet!</p>
+    <a routerLink="/add-user" class="btn btn-success">
+      <i class="fas fa-plus custom-fa-plus"></i>
+      Ajouter user
+    </a>
+  </div>
+
+  <!-- Showing users data -->
+  <div class="table-responsive" *ngIf="hideWhenNoStudent">
+    <table class="table table-bordered table-responsive-sm table-responsive-md table-responsive-lg">
+      <thead>
+        <tr>
+          <th scope="col">nom</th>
+          <th scope="col">prenom</th>             
+           <th scope="col">email</th>
+           <th scope="col">password</th>
+          <th scope="col">Telephone</th>
+          <th class="text-center" scope="col">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- *ngFor loop iterates over Student array and fetch the user's data -->
+        <!-- paginate pipe will add pagination in user's list, it won't show if items are less then 7 -->
+        <tr *ngFor="let user of User | paginate: { itemsPerPage: 7, currentPage: p }; let i = index;">
+          <td>{{user.nom}} </td>
+          <td>{{user.prenom}} </td>
+          <td>{{user.email}} </td>
+          <td>{{user.password}}</td>
+          <td>{{user.telephone}} </td>
+          <td class="text-center action-block">
+            <!-- routerLink="/edit-user/{{user.$key}}" is refered to { path: 'edit-user/:id', component: EditStudentComponent } in app-routing.moudles.ts -->
+            <i class="far fa-edit" routerLink="/edit-user/{{user.$key}}"></i>
+            <i class="far fa-trash-alt" (click)="Supprimerannonce(user)"></i></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <!-- Pagination -->
+  <pagination-controls (pageChange)="p = $event" autoHide="true" responsive="true"></pagination-controls>
+</div>
